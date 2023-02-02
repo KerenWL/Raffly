@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible"
+		  content="IE=edge">
+	<meta name="viewport"
+		  content="width=device-width, initial-scale=1.0">
+	<title>Raffly</title>
+	<!-- <script src="https://unpkg.com/vue@3"></script> -->
+	<script src="https://unpkg.com/vue@3.2.36/dist/vue.global.prod.js"></script>
+	<script src="loader.js"
+			type="module"></script>
+	<script src="index.js"
+			defer></script>
+
+	<!-- Google Fonts -->
+	<link rel="stylesheet"
+		  href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+	<!-- CSS Reset -->
+	<link rel="stylesheet"
+		  href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+	<!-- Milligram CSS -->
+	<link rel="stylesheet"
+		  href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+	<link rel="stylesheet"
+		  href="style.css">
+
+</head>
+
+<body>
+
+	<div id="app">
+		<main id="loader"
+			  v-if="!studentsLoaded">
+			<h1>Raffly</h1>
+
+			<div class="indicator">
+				<h1>Drop the file here!</h1>
+			</div>
+		</main>
+		<main id="content"
+			  v-else>
+			<header>
+				<h1>Raffly</h1>
+			</header>
+
+			<article>
+				<div>
+					<h2>Participants ({{ studentStore.getStudents().length }})</h2>
+					<ul id="participantList"
+						class="scrolly hide">
+						<li v-for="student in studentStore.getStudents()">{{ student }}</li>
+
+						<!-- handles looping -->
+						<li v-for="student in studentStore.getStudents().slice(0, 6)"
+							v-if="studentStore.getStudents().length > 5">{{ student }}</li>
+					</ul>
+				</div>
+				<div v-if="studentStore.winners.length">
+					<h2>Winners ({{ studentStore.winners.length }})</h2>
+					<ul id="resultList"
+						class="scrolly">
+						<li v-for="student in studentStore.winners">{{ student.name }} - {{ student.prize }}</li>
+					</ul>
+				</div>
+
+				<hr>
+
+				<form @submit.prevent="checkRaffle">
+					<label for="inputPrize">Prize</label>
+					<input type="text"
+						   id="inputPrize"
+						   autocomplete="false"
+						   v-model="rafflePrize">
+					<button>Start Raffle!</button>
+				</form>
+			</article>
+
+			<footer>
+				<i>STI Fairview ICT Club 2022</i>
+				<p>Made in <span style="color: red">❤</span> with Vue 3</p>
+			</footer>
+
+			<!-- modal -->
+
+			<div v-if="showRaffleModal"
+				 :class="['anim', { 'hide': !fadeRaffleModal }]">
+				<div>
+					<p>The winner of <i>{{ rafflePrize }}</i> is...</p>
+					<h1 :class="{ 'bold': finalRaffleModal, 'lighten': !modalStudentName.trim() }">
+						{{ modalStudentName || '(Picking...)' }}
+					</h1>
+				</div>
+			</div>
+		</main>
+	</div>
+
+</body>
+
+</html>
