@@ -16,6 +16,10 @@ body.hide {
   place-items: center;
   background-color: white;
   user-select: none;
+  text-align: center;
+}
+#loader .subtitle {
+  opacity: 0.6;
 }
 #loader .indicator {
   position: fixed;
